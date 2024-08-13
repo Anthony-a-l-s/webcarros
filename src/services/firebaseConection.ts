@@ -1,16 +1,17 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth"; 
+import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 
+
 const firebaseConfig = {
-    apiKey: "AIzaSyDV3mqQYmmkYDWp7sVSnP8HRWRL3ADMJK0",
-    authDomain: "webcarros-7c407.firebaseapp.com",
-    projectId: "webcarros-7c407",
-    storageBucket: "webcarros-7c407.appspot.com",
-    messagingSenderId: "527311700211",
-    appId: "1:527311700211:web:3bbb4078ea88f2f5b3f786"
+    apiKey: "AIzaSyBtb3jPzMVa_EyKYSIIlFixiRXlYplpaHQ",
+    authDomain: "webcarros-5515c.firebaseapp.com",
+    projectId: "webcarros-5515c",
+    storageBucket: "webcarros-5515c.appspot.com",
+    messagingSenderId: "463919932155",
+    appId: "1:463919932155:web:e1e9f3c38c5a50210b865e"
 };
 
 
@@ -20,4 +21,4 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const storage = getStorage(app);
 
-export {db, auth, storage};
+export { db, auth, storage };

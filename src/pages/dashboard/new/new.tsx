@@ -55,7 +55,7 @@ export function New() {
             return{
                 uid: car.uid,
                 name: car.name,
-                url: car.name
+                url: car.url
             }
         })
 
