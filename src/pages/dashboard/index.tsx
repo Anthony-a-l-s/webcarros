@@ -2,8 +2,9 @@ import { useState, useEffect, useContext } from "react";
 import { Container } from "../../components/container"
 import { DashboarHeader } from "../../components/panelHeader"
 import { FiTrash2 } from "react-icons/fi"
-import { collection, query, getDocs, where } from "firebase/firestore";
-import { db } from "../../services/firebaseConection";
+import { collection, query, getDocs, where, doc, deleteDoc } from "firebase/firestore";
+import { db, storage } from "../../services/firebaseConection";
+import { ref, deleteObject } from "firebase/storage";
 import { AuthContext } from "../../contexts/AuthContex";
 
 interface CarsProps {
@@ -63,6 +64,26 @@ export function Dashboard() {
 
     }, [user])
 
+    async function handleDeleteCar(car: CarsProps){
+        const itemCar = car;
+
+        const docRef = doc(db, "cars", itemCar.id)
+        await deleteDoc(docRef);
+        itemCar.images.map( async (image) => {
+            const imagePath = `images/${image.uid}/${image.name}`
+            const imageRef = ref(storage, imagePath)
+
+            try{
+                await deleteObject(imageRef)
+                setCars(cars.filter(car=> car.id !== itemCar.id))
+            }catch(err){
+                console.log("ERRO AO EXCLUIR ESSA IMAGEM" + err)
+            }
+            
+        })
+        
+    }
+
     return (
         <Container>
             <DashboarHeader />
@@ -71,7 +92,7 @@ export function Dashboard() {
                 {cars.map(car => (
                     <section key={car.id} className="w-full bg-white rounded-lg relative">
                         <button className="absolute bg-white w-14 h-14 rounded-full flex items-center justify-center right-2 top-2 drop-shadow"
-                            onClick={() => { }}
+                            onClick={() => handleDeleteCar(car) }
                         >
                             <FiTrash2 size={26} color="#000" />
                         </button>
