@@ -11,6 +11,7 @@ import { v4 as uuidV4 } from 'uuid'
 import { storage, db } from "../../../services/firebaseConection";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
+import  toast  from "react-hot-toast";
 
 const schema = z.object({
     name: z.string().nonempty('O nome é obrigatório'),
@@ -47,7 +48,8 @@ export function New() {
     function onSubmit(data: formData) {
 
         if(carImages.length === 0){
-            alert('Envie alguma imagem desse carro!')
+            toast.error("Envie pelo menos uma imagem");
+            
             return;
         }
 
@@ -60,7 +62,7 @@ export function New() {
         })
 
         addDoc(collection(db, "cars"), {
-            name: data.name,
+            name: data.name.toUpperCase(),
             model: data.model,
             whatsapp: data.whatsapp,
             city: data.city,
@@ -76,9 +78,11 @@ export function New() {
             reset();
             setCarImages([]);
             console.log('CADASTRADO COM SUCESSO!');
+            toast.success("Carro realizado com sucesso!");
         }).catch((error)=>{
             console.log('ERRO AO CADASTRAR NO BANCO!');
             console.log(error);
+            toast.error("Erro ao cadastrar");
         })
         
     }
@@ -113,6 +117,7 @@ export function New() {
                         url: donwloadUrl,
                     }
                     setCarImages((images) => [...images, imageItem])
+                    toast.success("Imagem enviada");
                 })
             })
     }
